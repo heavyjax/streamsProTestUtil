@@ -1,0 +1,6 @@
+.idea/
+
+*.jar
+*.lst
+*.class
+pom.properties
