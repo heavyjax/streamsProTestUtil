@@ -1,66 +1,62 @@
 package ru.sbrf;
 
 
-import ru.sbrf.util.*;
-import java.sql.*;
-import java.util.Properties;
+import ru.sbrf.db.dao.MonitoringDAO;
+import ru.sbrf.db.dao.Way4DAO;
+import ru.sbrf.db.dto.EvntMsgDTO;
+import ru.sbrf.db.model.EvntMsg;
+import ru.sbrf.json.JsonHelper;
+import ru.sbrf.json.model.JsonMessage;
+import ru.sbrf.json.validation.JsonValidator;
+import ru.sbrf.kafka.consumer.MessageReceiver;
+import ru.sbrf.kafka.producer.MessageSender;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 public class Main {
+    private static final String configPath = "/Users/heavyjax/GoogleDrive/Dev/StreamsProTestUtil/config.properties";
+
     public static void main(String[] args) {
-        Properties props = Util.getProperties("/Users/heavyjax/GoogleDrive/Dev/StreamsProTestUtil/config.properties");
 
-        try (Connection conn = DriverManager.getConnection(
-                props.getProperty("db_connection_string"), props.getProperty("db_user"), props.getProperty("db_passwd"))) {
+        try {
+            Way4DAO way4DAO = new Way4DAO(configPath);
+            //way4DAO.insertEvntMsg();
 
-            if (conn != null) {
-                System.out.println("Connected to the database!");
-                Statement stmt=conn.createStatement();
-                stmt.executeQuery(getInsertQuery(props));
+            EvntMsgDTO evntMsgDTO = new EvntMsgDTO(configPath);
+            EvntMsg evntMsg = evntMsgDTO.getEvntMsg();
 
-                ResultSet rs=stmt.executeQuery("select * from W4S.EVNT_MSG where id = " + props.getProperty("ID"));
+            System.out.println("evntMsg.getDateFrom() " + evntMsg.getDateFrom());
 
-                while(rs.next()) {
-                    System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
-                }
-            } else {
-                System.out.println("Failed to make connection!");
+            JsonHelper jsonHelper = new JsonHelper();
+            String kafkaMessage = jsonHelper.getJsonKafkaMessage(evntMsg);
+
+            //kafkaMessage = "{\"table\":{\"id\":21999,\"usageActionOid\":635882160030,\"addressData\":\"null\",\"deliveryChannel\":\"SBRF_I\",\"code\":\"null\",\"dateFrom\":\"2019-01-01 00:00:00\",\"dateTo\":\"2012-12-12 00:00:00\",\"messageDetails\":\"null\",\"messageString\":\"I^5336690143307272^2019-07-20 18:32:30^2^^nullnullnullnullnull\",\"messageTemplate\":2744711940,\"status\":\"W\",\"sendingChannel\":\"null\",\"sendingDate\":null,\"sendingDetails\":\"null\",\"refNumber\":\"null\",\"subject\":\"X\",\"priority\":0,\"groupNumber\":0,\"nodeIdent\":null},\"operation\":{\"type\":\"I\",\"cardNumber\":\"5336690143307272\",\"tranAmount\":null,\"tranCurrency\":null,\"tranTime\":\"2019-07-20 18:32:30\",\"authCode\":null,\"tranType\":null,\"replyCode\":null,\"merchant\":null,\"authType\":null,\"commissionAmount\":null,\"tranId\":null,\"sourceRegNum\":null,\"sourceNumber\":null,\"sicCode\":null,\"docId\":null,\"paymentId\":null,\"postpone\":null,\"cardCreditLimit\":null,\"lockoutCode\":null},\"card\":{\"cardBalance\":null,\"cardCurrency\":null,\"rbsNumber\":\"\",\"cardStatus\":\"\",\"prevCardNumber\":\"\",\"product\":\"\",\"cardExpire\":\"\",\"contractNumber\":\"\",\"tokenReferenceID\":null},\"message\":{\"msg\":null,\"msgType\":\"2\",\"mbcCardList\":[\"\"]},\"client\":{\"clientITN\":\"\",\"clientWayId\":\"\",\"cardsClient\":null,\"docNumber\":null,\"lastNamePrev\":null,\"lastNameCurr\":null,\"firstNamePrev\":null,\"firstNameCurr\":null,\"middleNamePrev\":null,\"middleNameCurr\":null,\"birthDatePrev\":null,\"birthDateCurr\":null}}";
+
+            MessageSender messageSender = new MessageSender(configPath);
+            messageSender.sendMessage("W4S.BALANCE", kafkaMessage, "AP");
+
+            Callable<String> callable = new MessageReceiver(configPath);
+            FutureTask<String> future = new FutureTask<>(callable);
+            new Thread(future).start();
+            String receivedKafkaMessage = future.get();
+
+            boolean jsonMessageisValid = false;
+
+            if (receivedKafkaMessage != null) {
+                JsonMessage jsonMessage = jsonHelper.getObjectFromKafkaMessage(receivedKafkaMessage);
+                JsonValidator jsonValidator = new JsonValidator();
+                jsonMessageisValid = jsonValidator.validate(jsonMessage, evntMsg);
             }
 
-        } catch (SQLException e) {
-            System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+            if (jsonMessageisValid) {
+                MonitoringDAO monitoringDAO = new MonitoringDAO(configPath);
+                monitoringDAO.selectEvntMetaInfo();
+            }
         } catch (Exception e) {
+            System.out.println("TEST FAILED...");
+            System.out.println("=================================================================================");
             e.printStackTrace();
         }
-    }
-
-    private static String getInsertQuery(Properties props) {
-        StringBuilder str = new StringBuilder();
-        str.append("insert into W4S.EVNT_MSG values (");
-        str.append("null".equals(props.getProperty("ID")) ? "null," : "'" + props.getProperty("ID") + "',");
-        str.append("null".equals(props.getProperty("USAGE_ACTION_OID")) ? "null," : "'" + props.getProperty("USAGE_ACTION_OID") + "',");
-        str.append("null".equals(props.getProperty("ADDRESS_DATA")) ? "null," : "'" + props.getProperty("ADDRESS_DATA") + "',");
-        str.append("null".equals(props.getProperty("DELIVERY_CHANNEL")) ? "null," : "'" + props.getProperty("DELIVERY_CHANNEL") + "',");
-        str.append("null".equals(props.getProperty("CODE")) ? "null," : "'" + props.getProperty("CODE") + "',");
-        str.append("null".equals(props.getProperty("DATE_FROM")) ? "null," : "to_date('" + props.getProperty("DATE_FROM") + "','DD.MM.RR'),");
-        str.append("null".equals(props.getProperty("DATE_TO")) ? "null," : "to_date('" + props.getProperty("DATE_TO") + "','DD.MM.RR'),");
-        str.append("null".equals(props.getProperty("MESSAGE_DETAILS")) ? "null," : "'" + props.getProperty("MESSAGE_DETAILS") + "',");
-        str.append("null".equals(props.getProperty("MESSAGE_STRING_1")) ? "null," : "'" + props.getProperty("MESSAGE_STRING_1") + "',");
-        str.append("null".equals(props.getProperty("MESSAGE_STRING_2")) ? "null," : "'" + props.getProperty("MESSAGE_STRING_2") + "',");
-        str.append("null".equals(props.getProperty("MESSAGE_STRING_3")) ? "null," : "'" + props.getProperty("MESSAGE_STRING_3") + "',");
-        str.append("null".equals(props.getProperty("MESSAGE_STRING_4")) ? "null," : "'" + props.getProperty("MESSAGE_STRING_4") + "',");
-        str.append("null".equals(props.getProperty("MESSAGE_STRING_5")) ? "null," : "'" + props.getProperty("MESSAGE_STRING_5") + "',");
-        str.append("null".equals(props.getProperty("MESSAGE_STRING_6")) ? "null," : "'" + props.getProperty("MESSAGE_STRING_6") + "',");
-        str.append("null".equals(props.getProperty("MSG_TEMPLATE")) ? "null," : "'" + props.getProperty("MSG_TEMPLATE") + "',");
-        str.append("null".equals(props.getProperty("STATUS")) ? "null," : "'" + props.getProperty("STATUS") + "',");
-        str.append("null".equals(props.getProperty("SENDING_CHANNEL")) ? "null," : "'" + props.getProperty("SENDING_CHANNEL") + "',");
-        str.append("null".equals(props.getProperty("SENDING_DATE")) ? "null," : "to_date('" + props.getProperty("SENDING_DATE") + "','DD.MM.RR'),");
-        str.append("null".equals(props.getProperty("SENDING_DETAILS")) ? "null," : "'" + props.getProperty("SENDING_DETAILS") + "',");
-        str.append("null".equals(props.getProperty("REF_NUMBER")) ? "null," : "'" + props.getProperty("REF_NUMBER") + "',");
-        str.append("null".equals(props.getProperty("SUBJECT")) ? "null," : "'" + props.getProperty("SUBJECT") + "',");
-        str.append("null".equals(props.getProperty("PRIORITY")) ? "null," : "'" + props.getProperty("PRIORITY") + "',");
-        str.append("null".equals(props.getProperty("GROUP_NUMBER")) ? "null," : "'" + props.getProperty("GROUP_NUMBER") + "',");
-        str.append("null".equals(props.getProperty("PARTITION_KEY")) ? "null" : "'" + props.getProperty("PARTITION_KEY") + "'");
-        str.append(")");
-        return str.toString();
     }
 }
