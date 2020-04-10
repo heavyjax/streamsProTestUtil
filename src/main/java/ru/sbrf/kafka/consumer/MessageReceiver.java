@@ -27,7 +27,7 @@ public class MessageReceiver implements Callable<String> {
         String receivedMessage = null;
         try (Consumer<Long, String> consumer = this.consumer) {
             consumer.subscribe(Arrays.asList(topicList));
-            long endTime = System.currentTimeMillis() + 10000L;
+            long endTime = System.currentTimeMillis() + Long.parseLong(fileProps.getProperty("KAFKA_CONSUMER_WAIT_TIMEOUT"));
 
             while (!Thread.currentThread().isInterrupted()) {
                 ConsumerRecords<Long, String> consumerRecords = consumer.poll(Duration.ofMillis(1000));
@@ -47,6 +47,9 @@ public class MessageReceiver implements Callable<String> {
                 consumer.commitAsync();
                 if (endTime < System.currentTimeMillis()) {
                     System.out.println("Kafka record ID not found. Consumer will be interrupted by timeout.");
+                    System.out.println("TEST FAILED...");
+                    System.out.println("=================================================================================");
+                    consumer.close();
                     Thread.currentThread().interrupt();
                 }
             }

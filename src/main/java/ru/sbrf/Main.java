@@ -15,18 +15,22 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 public class Main {
-    private static final String configPath = "/Users/heavyjax/GoogleDrive/Dev/StreamsProTestUtil/config.properties";
+    //private static final String configPath = "/Users/heavyjax/GoogleDrive/Dev/StreamsProTestUtil/config.properties";
 
     public static void main(String[] args) {
 
+        if (args.length == 0 || !args[0].equals("-p")) {
+            System.out.println("Please use flag -p to specify path to config.properties file");
+        }
+
+        String configPath = args[1];
+
         try {
             Way4DAO way4DAO = new Way4DAO(configPath);
-            //way4DAO.insertEvntMsg();
+            way4DAO.insertEvntMsg();
 
             EvntMsgDTO evntMsgDTO = new EvntMsgDTO(configPath);
             EvntMsg evntMsg = evntMsgDTO.getEvntMsg();
-
-            System.out.println("evntMsg.getDateFrom() " + evntMsg.getDateFrom());
 
             JsonHelper jsonHelper = new JsonHelper();
             String kafkaMessage = jsonHelper.getJsonKafkaMessage(evntMsg);

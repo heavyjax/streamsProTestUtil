@@ -30,10 +30,10 @@ public class MessageSender {
         ProducerRecord<Long, String> record = new ProducerRecord(topicName, null, null,
                 Long.valueOf(fileProps.getProperty("ID")), messageToSend, headers);
         RecordMetadata metadata = producer.send(record).get();
+        System.out.println("Kafka record was successfully send. ID: " + fileProps.getProperty("ID"));
         System.out.println("Partition: " + metadata.partition() +
                            " topic: " + metadata.topic() +
                            " offset: " + metadata.offset());
-        System.out.println("Kafka record was successfully send. ID: " + fileProps.getProperty("ID"));
         System.out.println("=================================================================================");
     }
 }
