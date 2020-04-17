@@ -19,8 +19,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        if (args.length == 0 || !args[0].equals("-p")) {
-            System.out.println("Please use flag -p to specify path to config.properties file");
+        if (args.length == 0 || !args[0].equals("-p") || args.length < 2) {
+            System.out.println("Please, specify path to config.properties file using -p flag");
+            System.exit(0);
         }
 
         String configPath = args[1];

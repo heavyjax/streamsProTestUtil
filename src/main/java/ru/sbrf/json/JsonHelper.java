@@ -86,36 +86,14 @@ public class JsonHelper {
                 return fillBType(json, msgDetails);
             case "N":
                 return fillNType(json, msgDetails);
+            case "LC":
+                return fillLCType(json, msgDetails);
+            case "LA":
+                return fillLAType(json, msgDetails);
             default:
                 //unhandled message
                 return json;
         }
-    }
-
-    private static JsonMessage fillNType(JsonMessage json, String[] msgDetails) {
-        Operation operation = new Operation();
-        Card card = new Card();
-        Message msg = new Message();
-        Client client = new Client();
-
-        operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
-        operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
-        msg.setMsgType(msgDetails.length > 3 ? msgDetails[3] : "");
-        card.setRbsNumber(msgDetails.length > 4 ? msgDetails[4] : "");
-        card.setPrevCardNumber(msgDetails.length > 5 ? msgDetails[5] : "");
-        client.setClientITN(msgDetails.length > 6 ? msgDetails[6] : "");
-        client.setClientWayId(msgDetails.length > 7 ? msgDetails[7] : "");
-        card.setCardStatus(msgDetails.length > 8 ? msgDetails[8] : "");
-        card.setProduct(msgDetails.length > 9 ? msgDetails[9] : "");
-        card.setCardExpire(msgDetails.length > 10 ? msgDetails[10] : "");
-        card.setContractNumber(msgDetails.length > 11 ? msgDetails[11] : "");
-
-        json.setOperation(operation);
-        json.setCard(card);
-        json.setMessage(msg);
-        json.setClient(client);
-        return json;
     }
 
     private static JsonMessage fillAType(JsonMessage json, String[] msgDetails) {
@@ -125,7 +103,7 @@ public class JsonHelper {
 
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranAmount(msgDetails.length > 2 ? Util.amountFormat(msgDetails[2]) : "");
+        operation.setTranAmount(msgDetails.length > 2 ? Long.parseLong(Util.amountFormat(msgDetails[2])) : 0L);
         operation.setTranCurrency(msgDetails.length > 3 ? msgDetails[3] : "");
         operation.setTranTime(msgDetails.length > 4 ? msgDetails[4] : "");
         operation.setAuthCode(msgDetails.length > 5 ? msgDetails[5] : "");
@@ -133,10 +111,15 @@ public class JsonHelper {
         operation.setTranType(msgDetails.length > 7 ? msgDetails[7] : "");
         operation.setMerchant(msgDetails.length > 8 ? msgDetails[8] : "");
         operation.setAuthType(msgDetails.length > 9 ? msgDetails[9] : "");
-        card.setCardBalance(msgDetails.length > 10 ? ("0".equals(msgDetails[6]) ? Util.amountFormat(msgDetails[10]) : "0") : "");
+        card.setCardBalance(msgDetails.length > 10 ?
+                ("0".equals(msgDetails[6]) ? Long.parseLong(Util.amountFormat(msgDetails[10])) : 0L) : null);
         card.setCardCurrency(msgDetails.length > 11 ? ("0".equals(msgDetails[6]) ? msgDetails[11] : "0") : "");
-        operation.setCommissionAmount(msgDetails.length > 12 ? Util.amountFormat(msgDetails[12]) : "");
-        operation.setTranId(msgDetails.length > 13 ? (StringUtils.isBlank(msgDetails[13]) ? "-1" : msgDetails[13]) : "");
+        operation.setCommissionAmount(msgDetails.length > 12 ?
+                ("".equals(Util.amountFormat(msgDetails[12])) ?
+                        null : Long.parseLong(Util.amountFormat(msgDetails[12])))
+                : null);
+        operation.setTranId(msgDetails.length > 13 ?
+                (StringUtils.isBlank(msgDetails[13]) ? "-1" : msgDetails[13]) : "");
 
         if (msgDetails.length > 14){
             operation.setSourceRegNum(msgDetails.length > 14 ? msgDetails[14]:"");
@@ -158,16 +141,20 @@ public class JsonHelper {
 
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranAmount(msgDetails.length > 2 ? Util.amountFormat(msgDetails[2]) : "");
+        operation.setTranAmount(msgDetails.length > 2 ?
+                ("".equals(Util.amountFormat(msgDetails[2])) ?
+                        null : Long.parseLong(Util.amountFormat(msgDetails[2]))) : null);
         operation.setTranCurrency(msgDetails.length > 3 ? msgDetails[3] : "");
         operation.setTranTime(msgDetails.length > 4 ? msgDetails[4] : "");
         operation.setAuthCode(msgDetails.length > 5 ? msgDetails[5] : "");
         operation.setReplyCode(msgDetails.length > 6 ? msgDetails[6] : "");
         operation.setTranType(msgDetails.length > 7 ? msgDetails[7] : "");
         operation.setMerchant(msgDetails.length > 8 ? msgDetails[8] : "");
-        card.setCardBalance(msgDetails.length > 9 ? (msgDetails[6].equals("0") ? Util.amountFormat(msgDetails[9]) : "0") : "");
+        card.setCardBalance(msgDetails.length > 9 ?
+                (msgDetails[6].equals("0") ? Long.parseLong(Util.amountFormat(msgDetails[9])) : 0L) : null);
         card.setCardCurrency(msgDetails.length > 10 ? (msgDetails[6].equals("0") ? msgDetails[10] : "0") : "");
-        operation.setCommissionAmount(msgDetails.length > 11 ? Util.amountFormat(msgDetails[11]) : "");
+        operation.setCommissionAmount(msgDetails.length > 11 ?
+                Long.parseLong(Util.amountFormat(msgDetails[11])) : null);
         operation.setPaymentId(msgDetails.length > 12 ? msgDetails[12] : "");
         operation.setPostpone(msgDetails.length > 13 ? msgDetails[13] : "");
 
@@ -192,12 +179,12 @@ public class JsonHelper {
 
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranAmount(msgDetails.length > 2 ? Util.amountFormat(msgDetails[2]) : "");
+        operation.setTranAmount(msgDetails.length > 2 ? Long.parseLong(Util.amountFormat(msgDetails[2])) : null);
         operation.setTranCurrency(msgDetails.length > 3 ? msgDetails[3] : "");
         operation.setTranTime(msgDetails.length > 4 ? msgDetails[4] : "");
         operation.setTranType(msgDetails.length > 5 ? msgDetails[5] : "");
-        card.setCardBalance(msgDetails.length > 6 ? Util.amountFormat(msgDetails[6]) : "");
-        operation.setCardCreditLimit(msgDetails.length > 7 ? Util.amountFormat(msgDetails[7]) : "");
+        card.setCardBalance(msgDetails.length > 6 ? Long.parseLong(Util.amountFormat(msgDetails[6])) : null);
+        operation.setCardCreditLimit(msgDetails.length > 7 ? Long.parseLong(Util.amountFormat(msgDetails[7])) : null);
 
         if (msgDetails.length > 8){
             operation.setSourceRegNum(msgDetails.length > 8 ? msgDetails[8]:"");
@@ -250,8 +237,8 @@ public class JsonHelper {
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
         operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
-        msg.setMsgType(msgDetails.length > 3 ? msgDetails[3] : "");
-        msg.setMbcCardList(msgDetails.length > 4 ? msgDetails[4].split(",") : new String[0]);
+        operation.setTranType(msgDetails.length > 3 ? msgDetails[3] : "");
+        client.setCardsClient(msgDetails.length > 4 ? msgDetails[4].split(",") : new String[0]);
         card.setRbsNumber(msgDetails.length > 6 ? msgDetails[6] : "");
         card.setPrevCardNumber(msgDetails.length > 7 ? msgDetails[7] : "");
         client.setClientITN(msgDetails.length > 8 ? msgDetails[8] : "");
@@ -276,9 +263,71 @@ public class JsonHelper {
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
         operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
-        operation.setLockoutCode(msgDetails.length > 3 ? msgDetails[3] : "");
+        operation.setLockoutCode(msgDetails.length > 3 ? Long.parseLong(msgDetails[3]) : null);
         card.setCardStatus(msgDetails.length > 4 ? msgDetails[4] : "");
         client.setCardsClient(msgDetails.length > 5 ? msgDetails[5].split(",") : new String[0]);
+
+        json.setOperation(operation);
+        json.setCard(card);
+        json.setClient(client);
+        return json;
+    }
+
+    private static JsonMessage fillNType(JsonMessage json, String[] msgDetails) {
+        Operation operation = new Operation();
+        Card card = new Card();
+        Message msg = new Message();
+        Client client = new Client();
+
+        operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
+        operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
+        operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
+        operation.setTranType(msgDetails.length > 3 ? msgDetails[3] : "");
+        card.setRbsNumber(msgDetails.length > 4 ? msgDetails[4] : "");
+        card.setPrevCardNumber(msgDetails.length > 5 ? msgDetails[5] : "");
+        client.setClientITN(msgDetails.length > 6 ? msgDetails[6] : "");
+        client.setClientWayId(msgDetails.length > 7 ? msgDetails[7] : "");
+        card.setCardStatus(msgDetails.length > 8 ? msgDetails[8] : "");
+        card.setProduct(msgDetails.length > 9 ? msgDetails[9] : "");
+        card.setCardExpire(msgDetails.length > 10 ? msgDetails[10] : "");
+        card.setContractNumber(msgDetails.length > 11 ? msgDetails[11] : "");
+
+        json.setOperation(operation);
+        json.setCard(card);
+        json.setMessage(msg);
+        json.setClient(client);
+        return json;
+    }
+
+    private static JsonMessage fillLCType(JsonMessage json, String[] msgDetails) {
+        Operation operation = new Operation();
+        Card card = new Card();
+        Client client = new Client();
+
+        operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
+        operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
+        operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
+        card.setCardStatus(msgDetails.length > 3 ? msgDetails[3] : "");
+        client.setClientITN(msgDetails.length > 4 ? msgDetails[4] : "");
+        client.setClientWayId(msgDetails.length > 5 ? msgDetails[5] : "");
+
+        json.setOperation(operation);
+        json.setCard(card);
+        json.setClient(client);
+        return json;
+    }
+
+    private static JsonMessage fillLAType(JsonMessage json, String[] msgDetails) {
+        Operation operation = new Operation();
+        Card card = new Card();
+        Client client = new Client();
+
+        operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
+        operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
+        operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
+        card.setCardStatus(msgDetails.length > 3 ? msgDetails[3] : "");
+        client.setClientITN(msgDetails.length > 4 ? msgDetails[4] : "");
+        client.setClientWayId(msgDetails.length > 5 ? msgDetails[5] : "");
 
         json.setOperation(operation);
         json.setCard(card);

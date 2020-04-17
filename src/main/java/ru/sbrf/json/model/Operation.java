@@ -3,7 +3,7 @@ package ru.sbrf.json.model;
 public class Operation {
     private String type;
     private String cardNumber;
-    private String tranAmount;
+    private Long tranAmount;
     private String tranCurrency;
     private String tranTime;
     private String authCode;
@@ -11,7 +11,7 @@ public class Operation {
     private String replyCode;
     private String merchant;
     private String authType;
-    private String commissionAmount;
+    private Long commissionAmount;
     private String tranId;
     private String sourceRegNum;
     private String sourceNumber;
@@ -19,8 +19,8 @@ public class Operation {
     private String docId;
     private String paymentId;
     private String postpone;
-    private String cardCreditLimit;
-    private String lockoutCode;
+    private Long cardCreditLimit;
+    private Long lockoutCode;
 
     public String getType() {
         return type;
@@ -38,11 +38,11 @@ public class Operation {
         this.cardNumber = cardNumber;
     }
 
-    public String getTranAmount() {
+    public Long getTranAmount() {
         return tranAmount;
     }
 
-    public void setTranAmount(String tranAmount) {
+    public void setTranAmount(Long tranAmount) {
         this.tranAmount = tranAmount;
     }
 
@@ -102,11 +102,11 @@ public class Operation {
         this.authType = authType;
     }
 
-    public String getCommissionAmount() {
+    public Long getCommissionAmount() {
         return commissionAmount;
     }
 
-    public void setCommissionAmount(String commissionAmount) {
+    public void setCommissionAmount(Long commissionAmount) {
         this.commissionAmount = commissionAmount;
     }
 
@@ -166,19 +166,19 @@ public class Operation {
         this.postpone = postpone;
     }
 
-    public String getCardCreditLimit() {
+    public Long getCardCreditLimit() {
         return cardCreditLimit;
     }
 
-    public void setCardCreditLimit(String cardCreditLimit) {
+    public void setCardCreditLimit(Long cardCreditLimit) {
         this.cardCreditLimit = cardCreditLimit;
     }
 
-    public String getLockoutCode() {
+    public Long getLockoutCode() {
         return lockoutCode;
     }
 
-    public void setLockoutCode(String lockoutCode) {
+    public void setLockoutCode(Long lockoutCode) {
         this.lockoutCode = lockoutCode;
     }
 
@@ -187,7 +187,7 @@ public class Operation {
         return "Operation{" +
                 "type='" + type + '\'' +
                 ", cardNumber='" + cardNumber + '\'' +
-                ", tranAmount='" + tranAmount + '\'' +
+                ", tranAmount=" + tranAmount +
                 ", tranCurrency='" + tranCurrency + '\'' +
                 ", tranTime='" + tranTime + '\'' +
                 ", authCode='" + authCode + '\'' +
@@ -195,7 +195,7 @@ public class Operation {
                 ", replyCode='" + replyCode + '\'' +
                 ", merchant='" + merchant + '\'' +
                 ", authType='" + authType + '\'' +
-                ", commissionAmount='" + commissionAmount + '\'' +
+                ", commissionAmount=" + commissionAmount +
                 ", tranId='" + tranId + '\'' +
                 ", sourceRegNum='" + sourceRegNum + '\'' +
                 ", sourceNumber='" + sourceNumber + '\'' +
@@ -203,8 +203,8 @@ public class Operation {
                 ", docId='" + docId + '\'' +
                 ", paymentId='" + paymentId + '\'' +
                 ", postpone='" + postpone + '\'' +
-                ", cardCreditLimit='" + cardCreditLimit + '\'' +
-                ", lockoutCode='" + lockoutCode + '\'' +
+                ", cardCreditLimit=" + cardCreditLimit +
+                ", lockoutCode=" + lockoutCode +
                 '}';
     }
 }

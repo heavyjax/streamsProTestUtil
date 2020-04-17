@@ -1,7 +1,7 @@
 package ru.sbrf.json.model;
 
 public class Card {
-    private String cardBalance;
+    private Long cardBalance;
     private String cardCurrency;
     private String rbsNumber;
     private String cardStatus;
@@ -11,11 +11,11 @@ public class Card {
     private String contractNumber;
     private String tokenReferenceID;
 
-    public String getCardBalance() {
+    public Long getCardBalance() {
         return cardBalance;
     }
 
-    public void setCardBalance(String cardBalance) {
+    public void setCardBalance(Long cardBalance) {
         this.cardBalance = cardBalance;
     }
 
