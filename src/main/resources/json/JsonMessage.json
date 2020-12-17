@@ -1,0 +1,980 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "required": [
+  ],
+  "properties": {
+    "requestChainUid": {
+      "$id": "#/properties/requestChainUid",
+      "type": "string",
+      "title": "UID",
+      "description": "Уникальный идентификатор сообщения для контроля в логах адаптере ИМ, склеен из nodeIdent и id",
+      "pattern": "([0-9]|[a-f]|[A-F]){32}",
+      "examples": [
+        "aa62c606eB4FBC000000000025769960"
+      ]
+    },
+    "nodeIdent": {
+      "$id": "#/properties/nodeIdent",
+      "type": "string",
+      "title": "Source node",
+      "description": "Уникальный идентификатор источника, должен совпадать с аналогичным значением из хеддера",
+      "maxLength": 12,
+      "examples": [
+        "w4prim|MSG"
+      ]
+    },
+    "table": {
+      "$id": "#/properties/table",
+      "type": "object",
+      "title": "The Table Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "required": [
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/table/properties/id",
+          "type": "integer",
+          "title": "The Id Schema",
+          "description": "EVNT_MSG.ID",
+          "examples": [
+            12345
+          ]
+        },
+        "usageActionOid": {
+          "$id": "#/properties/table/properties/actionIOD",
+          "type": ["integer", "null"],
+          "title": "The Actioniod Schema",
+          "description": "EVNT_MSG.USAGE_ACTION__OID",
+          "examples": [
+            2345
+          ]
+        },
+        "addressData": {
+          "$id": "#/properties/table/properties/addressData",
+          "type": ["string", "null"],
+          "title": "The Addressdata Schema",
+          "description": "EVNT_MSG.ADDRESS_DATA",
+          "maxLength": 250,
+          "examples": [
+            "str"
+          ]
+        },
+        "deliveryChannel": {
+          "$id": "#/properties/table/properties/deliveryCahnnel",
+          "type": ["string", "null"],
+          "title": "The Deliverycahnnel Schema",
+          "description": "EVNT_MSG.DELIVERY_CHANNEL",
+          "maxLength": 50,
+          "examples": [
+            "M"
+          ]
+        },
+        "code": {
+          "$id": "#/properties/table/properties/code",
+          "type": ["string", "null"],
+          "title": "The Code Schema",
+          "description": "EVNT_MSG.CODE",
+          "maxLength": 50,
+          "examples": [
+            "CR_CH_ST_+"
+          ]
+        },
+        "dateFrom": {
+          "$id": "#/properties/table/properties/dateFrom",
+          "type": "string",
+          "title": "The Datefrom Schema",
+          "description": "EVNT_MSG.DATE_FROM",
+          "examples": [
+            "2020-04-13 19:33:09"
+          ]
+        },
+        "dateTo": {
+          "$id": "#/properties/table/properties/dateTo",
+          "type": ["string", "null"],
+          "title": "The Dateto Schema",
+          "description": "EVNT_MSG.DATE_TO",
+          "examples": [
+            "2020-04-13 19:33:09"
+          ]
+        },
+        "messageDetails": {
+          "$id": "#/properties/table/properties/messageDetails",
+          "type": ["string", "null"],
+          "title": "The Messagedetails Schema",
+          "description": "EVNT_MSG.MESSAGE_DETAILS",
+          "maxLength": 500,
+          "examples": [
+            "abc"
+          ]
+        },
+        "messageString": {
+          "$id": "#/properties/table/properties/messageString",
+          "type": ["string", "null"],
+          "title": "The Messagestring Schema",
+          "description": "concat (EVNT_MSG.MESSAGE_STRING_1 ... EVNT_MSG.MESSAGE_STRING_6)",
+          "maxLength": 2000,
+          "examples": [
+            "message"
+          ]
+        },
+        "messageTemplate": {
+          "$id": "#/properties/table/properties/messageTemplate",
+          "type": ["integer", "null"],
+          "title": "The Messagetemplate Schema",
+          "description": "EVNT_MSG.MSG_TEMPLATE",
+          "examples": [
+            987654
+          ]
+        },
+        "status": {
+          "$id": "#/properties/table/properties/status",
+          "type": ["string", "null"],
+          "title": "The Status Schema",
+          "description": "EVNT_MSG.STATUS",
+          "maxLength": 10,
+          "examples": [
+            "W"
+          ]
+        },
+        "sendingChannel": {
+          "$id": "#/properties/table/properties/sendingChannel",
+          "type": ["string", "null"],
+          "title": "The Sendingchannel Schema",
+          "description": "EVNT_MSG.SENDING_CHANNEL",
+          "maxLength": 200,
+          "examples": [
+            "zxcv"
+          ]
+        },
+        "sendingDate": {
+          "$id": "#/properties/table/properties/sendingDate",
+          "type": ["string", "null"],
+          "title": "The Sendingdate Schema",
+          "description": "EVNT_MSG.SENDING_DATE",
+          "examples": [
+            "2020-04-13 19:33:09"
+          ]
+        },
+        "sendingDetails": {
+          "$id": "#/properties/table/properties/sendingDatails",
+          "type": ["string", "null"],
+          "title": "The Sendingdatails Schema",
+          "description": "EVNT_MSG.SENDING_DETAILS",
+          "maxLength": 200,
+          "examples": [
+            "asdf"
+          ]
+        },
+        "refNumber": {
+          "$id": "#/properties/table/properties/refNumber",
+          "type": ["string", "null"],
+          "title": "The Refnumber Schema",
+          "description": "EVNT_MSG.REF_NUMBER",
+          "maxLength": 200,
+          "examples": [
+            "542345767"
+          ]
+        },
+        "subject": {
+          "$id": "#/properties/table/properties/subject",
+          "type": ["string", "null"],
+          "title": "EVNT_MSG.SUBJECT",
+          "description": "An explanation about the purpose of this instance.",
+          "maxLength": 200,
+          "examples": [
+            "asdf"
+          ]
+        },
+        "priority": {
+          "$id": "#/properties/table/properties/priority",
+          "type": ["integer", "null"],
+          "title": "The Priority Schema",
+          "description": "EVNT_MSG.PRIORITY",
+          "examples": [
+            1
+          ]
+        },
+        "groupNumber": {
+          "$id": "#/properties/table/properties/groupNumber",
+          "type": ["integer", "null"],
+          "title": "The Groupnumber Schema",
+          "description": "EVNT_MSG.GROUP_NUMBER",
+          "examples": [
+            0
+          ]
+        },
+        "nodeIdent": {
+          "$id": "#/properties/table/properties/nodeIdent",
+          "type": ["string", "null"],
+          "title": "The Nodeident Schema",
+          "description": "Уникальный идентификатор источника. В последующих версиях будет удалено",
+          "maxLength": 12,
+          "examples": [
+            "W4PRIM|MSG"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "operation": {
+      "$id": "#/properties/operation",
+      "type": ["object", "null"],
+      "title": "The Operation Schema",
+      "description": "Данные по операции",
+      "examples": [
+        {
+          "type": "F",
+          "cardNumber": "22022XXXXXXXXXX",
+          "tranAmount": 6000,
+          "tranCurrency": "RUR",
+          "tranTime": "2018-10-05 00:00:00",
+          "authCode": "",
+          "tranType": "R",
+          "replyCode": "0",
+          "merchant": "",
+          "authType": null,
+          "commissionAmount": 0,
+          "tranId": null,
+          "sourceRegNum": null,
+          "sourceNumber": null,
+          "sicCode": null,
+          "docId": null,
+          "paymentId": "7960998123234234325",
+          "postpone": "PEND",
+          "cardCreditLimit": null,
+          "lockoutCode": null
+        }
+      ],
+      "required": [
+      ],
+      "properties": {
+        "type": {
+          "$id": "#/properties/operation/properties/type",
+          "type": "string",
+          "title": "The Type Schema",
+          "description": "Код типа сообщения.",
+          "maxLength": 2,
+          "examples": [
+            "A"
+          ]
+        },
+        "cardNumber": {
+          "$id": "#/properties/operation/properties/cardNumber",
+          "type": ["string", "null"],
+          "title": "The Cardnumber Schema",
+          "description": "PAN.",
+          "maxLength": 18,
+          "pattern": "^([0-9]{16,18})$",
+          "default": null,
+          "examples": [
+            "1234098745671234"
+          ]
+        },
+        "tranAmount": {
+          "$id": "#/properties/operation/properties/tranAmount",
+          "type": ["integer", "null"],
+          "title": "The Tranamount Schema",
+          "description": "Сумма транзакции в копейках.",
+          "examples": [
+            100000
+          ]
+        },
+        "tranCurrency": {
+          "$id": "#/properties/operation/properties/tranCurrency",
+          "type": ["string", "null"],
+          "title": "The Trancurrency Schema",
+          "description": "Код валюты транзакции.",
+          "maxLength": 3,
+          "examples": [
+            "RUR"
+          ]
+        },
+        "tranTime": {
+          "$id": "#/properties/operation/properties/tranTime",
+          "type": ["string", "null"],
+          "title": "The Trantime Schema",
+          "description": "Дата-время транзакции.",
+          "examples": [
+            "01.01.2019 23:00:00"
+          ]
+        },
+        "authCode": {
+          "$id": "#/properties/operation/properties/authCode",
+          "type": ["string", "null"],
+          "title": "The Authcode Schema",
+          "description": "Код авторизации.",
+          "maxLength": 20,
+          "examples": [
+            "567432"
+          ]
+        },
+        "tranType": {
+          "$id": "#/properties/operation/properties/tranType",
+          "type": ["string", "null"],
+          "title": "The Trantype Schema",
+          "description": "Тип транзакции.",
+          "maxLength": 2,
+          "examples": [
+            "*"
+          ]
+        },
+        "replyCode": {
+          "$id": "#/properties/operation/properties/replyCode",
+          "type": ["string", "null"],
+          "title": "The Replycode Schema",
+          "description": "Код ответа.",
+          "maxLength": 2,
+          "examples": [
+            "00"
+          ]
+        },
+        "merchant": {
+          "$id": "#/properties/operation/properties/merchant",
+          "type": ["string", "null"],
+          "title": "The Merchant Schema",
+          "description": "Код источника поступления и (или) наименование торговой точки.",
+          "maxLength": 500,
+          "examples": [
+            "BEELINE "
+          ]
+        },
+        "authType": {
+          "$id": "#/properties/operation/properties/authType",
+          "type": ["string", "null"],
+          "title": "The Authtype Schema",
+          "description": "Тип авторизации.",
+          "maxLength": 20,
+          "examples": [
+            "A01000R"
+          ]
+        },
+        "commissionAmount": {
+          "$id": "#/properties/operation/properties/commissionAmount",
+          "type": ["integer", "null"],
+          "title": "The Commissionamount Schema",
+          "description": "Сумма комиссии в копейках.",
+          "examples": [
+            334
+          ]
+        },
+        "tranId": {
+          "$id": "#/properties/operation/properties/tranId",
+          "type": ["string", "null"],
+          "title": "The Tranid Schema",
+          "description": "Идентификатор транзакции.",
+          "maxLength": 50,
+          "examples": [
+            "543324"
+          ]
+        },
+        "sourceRegNum": {
+          "$id": "#/properties/operation/properties/sourceRegNum",
+          "type": ["string", "null"],
+          "title": "The Sourceregnum Schema",
+          "description": "Номер ссылки на документ.",
+          "maxLength": 200,
+          "examples": [
+            "548765685"
+          ]
+        },
+        "sourceNumber": {
+          "$id": "#/properties/operation/properties/sourceNumber",
+          "type": ["string", "null"],
+          "title": "The Sourcenumber Schema",
+          "description": "Идентификатор терминала.",
+          "maxLength": 200,
+          "examples": [
+            "9856432"
+          ]
+        },
+        "sicCode": {
+          "$id": "#/properties/operation/properties/sicCode",
+          "type": ["string", "null"],
+          "title": "The Siccode Schema",
+          "description": "МСС код.",
+          "maxLength": 200,
+          "examples": [
+            "f456"
+          ]
+        },
+        "docId": {
+          "$id": "#/properties/operation/properties/docId",
+          "type": ["string", "null"],
+          "title": "The Docid Schema",
+          "description": "Идентификатор документа.",
+          "maxLength": 200,
+          "examples": [
+            "09485001"
+          ]
+        },
+        "paymentId": {
+          "$id": "#/properties/operation/properties/paymentId",
+          "type": ["string", "null"],
+          "title": "The Paymentid Schema",
+          "description": "Идентификатор платежа.",
+          "maxLength": 200,
+          "examples": [
+            "3453453"
+          ]
+        },
+        "postpone": {
+          "$id": "#/properties/operation/properties/postpone",
+          "type": ["string", "null"],
+          "title": "The Postpone Schema",
+          "description": "Признак отложенной оплаты.",
+          "maxLength": 20,
+          "examples": [
+            "PEND"
+          ]
+        },
+        "cardCreditLimit": {
+          "$id": "#/properties/operation/properties/cardCreditLimit",
+          "type": ["integer", "null"],
+          "title": "The Cardcreditlimit Schema",
+          "description": "Предыдущее значение кредитного лимита в копейках.",
+          "examples": [
+            30000
+          ]
+        },
+        "lockoutCode": {
+          "$id": "#/properties/operation/properties/lockoutCode",
+          "type": ["integer", "null"],
+          "title": "The Lockoutcode Schema",
+          "description": "Код блокировки.",
+          "examples": [
+            3
+          ]
+        },
+        "stlAmount": {
+          "$id": "#/properties/operation/properties/stlAmount",
+          "type": ["integer", "null"],
+          "title": "The stlAmount Schema",
+          "description": "Сумма в валюте расчетов в копейках.",
+          "examples": [
+            100000
+          ]
+        },
+        "stlCurrency": {
+          "$id": "#/properties/operation/properties/stlCurrency",
+          "type": ["string", "null"],
+          "title": "The stlCurrency Schema",
+          "description": "Код валюты расчетов.",
+          "maxLength": 3,
+          "examples": [
+            "RUR"
+          ]
+        },
+        "refundAmount": {
+          "$id": "#/properties/operation/properties/refundAmount",
+          "type": ["integer", "null"],
+          "title": "The refundAmount Schema",
+          "description": "Сумма в валюте возмещения в копейках.",
+          "examples": [
+            100000
+          ]
+        },
+        "refundCurrency": {
+          "$id": "#/properties/operation/properties/refundCurrency",
+          "type": ["string", "null"],
+          "title": "The refundCurrency Schema",
+          "description": "Код валюты возмещения.",
+          "maxLength": 3,
+          "examples": [
+            "RUR"
+          ]
+        },
+        "docPrevId": {
+          "$id": "#/properties/operation/properties/docPrevId",
+          "type": ["string", "null"],
+          "title": "The docPrevId Schema",
+          "description": "ID предыдущего документа",
+          "maxLength": 18,
+          "examples": [
+            "23423423422"
+          ]
+        },
+        "tranTypeId": {
+          "$id": "#/properties/operation/properties/tranTypeId",
+          "type": ["string", "null"],
+          "title": "The tranTypeId Schema",
+          "description": "Внутренний ID типа транзакции",
+          "maxLength": 12,
+          "examples": [
+            "123498"
+          ]
+        },
+        "sourceChannel": {
+          "$id": "#/properties/operation/properties/sourceChannel",
+          "type": ["string", "null"],
+          "title": "The sourceChannel Schema",
+          "description": "Канал, из которого пришла операция",
+          "maxLength": 1,
+          "examples": [
+            "E"
+          ]
+        },
+        "countryCode": {
+          "$id": "#/properties/operation/properties/countryCode",
+          "type": ["string", "null"],
+          "title": "The Trancurrency Schema",
+          "description": "Код страны.",
+          "maxLength": 3,
+          "examples": [
+            "RUS"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "card": {
+      "$id": "#/properties/card",
+      "type": ["object", "null"],
+      "title": "The Card Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "required": [
+      ],
+      "properties": {
+        "cardBalance": {
+          "$id": "#/properties/card/properties/cardBalance",
+          "type": ["integer", "null"],
+          "title": "The Cardbalance Schema",
+          "description": "Баланс карты в копейках.",
+          "default": null,
+          "examples": [
+            200000
+          ]
+        },
+        "cardCurrency": {
+          "$id": "#/properties/card/properties/cardCurrency",
+          "type": ["string", "null"],
+          "title": "The Cardcurrency Schema",
+          "description": "Код валюты карты.",
+          "maxLength": 3,
+          "default": null,
+          "examples": [
+            "RUR"
+          ]
+        },
+        "rbsNumber": {
+          "$id": "#/properties/card/properties/rbsNumber",
+          "type": ["string", "null"],
+          "title": "The Rbsnumber Schema",
+          "description": "Счет клиента.",
+          "maxLength": 30,
+          "examples": [
+            "0010200128339452"
+          ]
+        },
+        "cardStatus": {
+          "$id": "#/properties/card/properties/cardStatus",
+          "type": ["string", "null"],
+          "title": "The Cardstatus Schema",
+          "description": "Статус карты.",
+          "maxLength": 3,
+          "default": null,
+          "examples": [
+            "+"
+          ]
+        },
+        "prevCardNumber": {
+          "$id": "#/properties/card/properties/prevCardNumber",
+          "type": ["string", "null"],
+          "title": "The Prevcardnumber Schema",
+          "description": "Номер предыдущей карты.",
+          "maxLength": 18,
+          "default": null,
+          "examples": [
+            "1234098745674523"
+          ]
+        },
+        "product": {
+          "$id": "#/properties/card/properties/product",
+          "type": ["string", "null"],
+          "title": "The Product Schema",
+          "description": "Продукт (исходя из значений в PPRB/SQW).",
+          "maxLength": 20,
+          "default": null,
+          "examples": [
+            "PPRB"
+          ]
+        },
+        "cardExpire": {
+          "$id": "#/properties/card/properties/cardExpire",
+          "type": ["string", "null"],
+          "title": "The Cardexpire Schema",
+          "description": "Срок действия карты (формат YYMM).",
+          "maxLength": 4,
+          "default": null,
+          "examples": [
+            "2312"
+          ]
+        },
+        "contractNumber": {
+          "$id": "#/properties/card/properties/contractNumber",
+          "type": ["string", "null"],
+          "title": "The Contractnumber Schema",
+          "description": "Номер контракта.",
+          "maxLength": 50,
+          "default": null,
+          "examples": [
+            "43857348546"
+          ]
+        },
+        "tokenReferenceID": {
+          "$id": "#/properties/card/properties/tokenReferenceID",
+          "type": ["string", "null"],
+          "title": "The Tokenreferenceid Schema",
+          "description": "Токен.",
+          "maxLength": 50,
+          "default": null,
+          "examples": [
+            "67548567qsx4"
+          ]
+        },
+        "cbCode": {
+          "$id": "#/properties/card/properties/cbCode",
+          "type": ["string", "null"],
+          "title": "CB Code Schema",
+          "description": "код финансового института.",
+          "maxLength": 32,
+          "default": null,
+          "examples": [
+            "80800081"
+          ]
+        },
+        "cardDateOpen": {
+          "$id": "#/properties/card/properties/cardDateOpen",
+          "type": ["string", "null"],
+          "title": "Date of card open Schema",
+          "description": "Дата открытия контракта",
+          "maxLength": 10,
+          "default": null,
+          "examples": [
+            "2018-09-25"
+          ]
+        },
+        "addInfo": {
+          "$id": "#/properties/card/properties/addInfo",
+          "type": ["string", "null"],
+          "title": "Addition information Schema",
+          "description": "Дополнительные коды по карте",
+          "maxLength": 200,
+          "default": null,
+          "examples": [
+            "B=1122;UCPR=10;CN=1;UCFC=Z;IN=0;MB=1;"
+          ]
+        },
+        "cardDateClose": {
+          "$id": "#/properties/card/properties/cardDateClose",
+          "type": ["string", "null"],
+          "title": "Date of card close Schema",
+          "description": "Дата закрытия контракта",
+          "maxLength": 10,
+          "default": null,
+          "examples": [
+            "2018-09-25"
+          ]
+        },
+        "contractId": {
+          "$id": "#/properties/card/properties/contractId",
+          "type": ["string", "null"],
+          "title": "Way Id Schema",
+          "description": "ID в системе",
+          "maxLength": 18,
+          "default": null,
+          "examples": [
+            "867546785768"
+          ]
+        },
+        "level": {
+          "$id": "#/properties/card/properties/level",
+          "type": ["string", "null"],
+          "title": "Card level Schema",
+          "description": "уровень карты",
+          "maxLength": 1,
+          "default": null,
+          "examples": [
+            "3"
+          ]
+        },
+        "trLastName": {
+          "$id": "#/properties/card/properties/trLastName",
+          "type": ["string", "null"],
+          "title": "The Card Lastname Schema",
+          "description": "Фамилия, указанная на карте.",
+          "maxLength": 100,
+          "examples": [
+            "IVANOV"
+          ]
+        },
+        "trFirstName": {
+          "$id": "#/properties/card/properties/trFirstName",
+          "type": ["string", "null"],
+          "title": "The Card Firstname Schema",
+          "description": "Имя, указанное на карте",
+          "maxLength": 100,
+          "examples": [
+            "ALEX"
+          ]
+        }
+
+      },
+      "additionalProperties": true
+    },
+    "message": {
+      "$id": "#/properties/message",
+      "type": ["object", "null"],
+      "title": "The Message Schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "msg": "text"
+        }
+      ],
+      "required": [
+      ],
+      "properties": {
+        "msg": {
+          "$id": "#/properties/message/properties/msg",
+          "type": ["string", "null"],
+          "title": "The Msg Schema",
+          "description": "Текст готового уведомления.",
+          "maxLength": 2000,
+          "examples": [
+            "text"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "client": {
+      "$id": "#/properties/client",
+      "type": ["object", "null"],
+      "title": "The Client Schema",
+      "description": "Блок данных по клиенту",
+      "required": [
+      ],
+      "properties": {
+        "clientITN": {
+          "$id": "#/properties/client/properties/clientITN",
+          "type": ["string", "null"],
+          "title": "The Clientitn Schema",
+          "description": "Идентификатор клиента из ЕПК.",
+          "maxLength": 40,
+          "default": null,
+          "examples": [
+            "983487QW"
+          ]
+        },
+        "clientWayId": {
+          "$id": "#/properties/client/properties/clientWayId",
+          "type": ["string", "null"],
+          "title": "The Clientwayid Schema",
+          "description": "Идентификатор клиента из Way4.",
+          "maxLength": 40,
+          "default": null,
+          "examples": [
+            "010834588845"
+          ]
+        },
+        "clientWayDate": {
+          "$id": "#/properties/client/properties/clientWayDate",
+          "type": ["string", "null"],
+          "title": "The clientWayDate Schema",
+          "description": "Дата создания клиента в Way4.",
+          "maxLength": 10,
+          "default": null,
+          "examples": [
+            "2018-09-25"
+          ]
+        },
+        "cardsClient": {
+          "$id": "#/properties/client/properties/cardsClient",
+          "type": ["array", "null"],
+          "title": "The Cardsclient Schema",
+          "description": "Номера карт  клиента.",
+          "default": [],
+          "items": {
+            "$id": "#/properties/client/properties/cardsClient/items",
+            "type": "string",
+            "title": "The Items Schema",
+            "description": "Номер карты.",
+            "default": "",
+            "examples": [
+              "1234098745671234",
+              "1234098745671238"
+            ]
+          }
+        },
+        "lastName": {
+          "$id": "#/properties/client/properties/lastName",
+          "type": ["string", "null"],
+          "title": "The Lastname Schema",
+          "description": "Фамилия.",
+          "maxLength": 100,
+          "examples": [
+            ""
+          ]
+        },
+        "firstName": {
+          "$id": "#/properties/client/properties/firstName",
+          "type": ["string", "null"],
+          "title": "The Firstname Schema",
+          "description": "Имя.",
+          "maxLength": 100,
+          "examples": [
+            ""
+          ]
+        },
+        "middleName": {
+          "$id": "#/properties/client/properties/middleName",
+          "type": ["string", "null"],
+          "title": "The Middlename Schema",
+          "description": "Отчество.",
+          "maxLength": 100,
+          "examples": [
+            ""
+          ]
+        },
+        "birthDate": {
+          "$id": "#/properties/client/properties/birthDate",
+          "type": ["string", "null"],
+          "title": "The Birthdatec Schema",
+          "description": "Дата рождения.",
+          "maxLength": 10,
+          "examples": [
+            "2018-09-25"
+          ]
+        },
+        "birthPlace": {
+          "$id": "#/properties/client/properties/birthPlace",
+          "type": ["string", "null"],
+          "title": "The birthPlace Schema",
+          "description": "Место рождения.",
+          "maxLength": 100,
+          "examples": [
+            "Москва"
+          ]
+        },
+        "regNumber": {
+          "$id": "#/properties/client/properties/regNumber",
+          "type": ["string", "null"],
+          "title": "The document number Schema",
+          "description": "Номер документа.",
+          "maxLength": 32,
+          "examples": [
+            "5609 453235"
+          ]
+        },
+        "regNumberDetails": {
+          "$id": "#/properties/client/properties/regNumberDetails",
+          "type": ["string", "null"],
+          "title": "The document information Schema",
+          "description": "Дополнительные данные по документу удостоверяющего личность",
+          "maxLength": 100,
+          "examples": [
+            ""
+          ]
+        },
+        "gender": {
+          "$id": "#/properties/client/properties/gender",
+          "type": ["string", "null"],
+          "title": "The gender Schema",
+          "description": "Пол.",
+          "maxLength": 2,
+          "examples": [
+            "F"
+          ]
+        },
+        "type": {
+          "$id": "#/properties/client/properties/type",
+          "type": ["string", "null"],
+          "title": "The type Schema",
+          "description": "тип (персональный, корпоративный)",
+          "maxLength": 2,
+          "examples": [
+            "P"
+          ]
+        },
+        "companyName": {
+          "$id": "#/properties/client/properties/companyName",
+          "type": ["string", "null"],
+          "title": "The job place Schema",
+          "description": "Место работы",
+          "maxLength": 100,
+          "examples": [
+            ""
+          ]
+        },
+        "profession": {
+          "$id": "#/properties/client/properties/profession",
+          "type": ["string", "null"],
+          "title": "The profession Schema",
+          "description": "Должность",
+          "maxLength": 100,
+          "examples": [
+            ""
+          ]
+        },
+        "email": {
+          "$id": "#/properties/client/properties/email",
+          "type": ["string", "null"],
+          "title": "The email Schema",
+          "description": "E-mail",
+          "maxLength": 50,
+          "examples": [
+            ""
+          ]
+        },
+        "mobilePhone": {
+          "$id": "#/properties/client/properties/mobilePhone",
+          "type": ["string", "null"],
+          "title": "The client`s mobile phone number Schema",
+          "description": "Номер мобильного телефона",
+          "maxLength": 20,
+          "examples": [
+            ""
+          ]
+        },
+        "homePhone": {
+          "$id": "#/properties/client/properties/homePhone",
+          "type": ["string", "null"],
+          "title": "The client`s home phone number Schema",
+          "description": "Домашний номер телефона",
+          "maxLength": 20,
+          "examples": [
+            ""
+          ]
+        },
+        "workPhone": {
+          "$id": "#/properties/client/properties/workPhone",
+          "type": ["string", "null"],
+          "title": "The client`s work phone number Schema",
+          "description": "Рабочий номер телефона",
+          "maxLength": 20,
+          "examples": [
+            ""
+          ]
+        },
+        "cbCode": {
+          "$id": "#/properties/client/properties/cbCode",
+          "type": ["string", "null"],
+          "title": "CB Code Schema",
+          "description": "код финансового института.",
+          "maxLength": 32,
+          "default": null,
+          "examples": [
+            "80800081"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

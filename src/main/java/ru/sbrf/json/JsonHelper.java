@@ -1,15 +1,18 @@
 package ru.sbrf.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import ru.qatools.json2pojo.beans.*;
 import ru.sbrf.db.model.EvntMsg;
-import ru.sbrf.json.model.*;
+//import ru.sbrf.json.model.*;
 import ru.sbrf.util.Util;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 
 public class JsonHelper {
 
@@ -30,10 +33,25 @@ public class JsonHelper {
         Table table = fillerTableSection(evntMsg);
         jsonMessage.setTable(table);
 
-        System.out.println("Message will be send into kafka: " + mapper.
+        System.out.println("Manual generated Message will be send into kafka: " + mapper.
+                writerWithDefaultPrettyPrinter().
                 writeValueAsString(fillerMsgSection(jsonMessage, table.getMessageString())));
-
         return mapper.writeValueAsString(fillerMsgSection(jsonMessage, table.getMessageString()));
+    }
+
+    public boolean compareJsonMessages(String message1, String message2) {
+        JsonNode tree1 = null;
+        JsonNode tree2 = null;
+        try {
+            tree1 = mapper.readTree(message1);
+            tree2 = mapper.readTree(message2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Message 1: " + message1);
+        System.out.println("Message 2: " + message2);
+        System.out.println("Messages are equals: " + tree1.equals(tree2));
+        return tree1.equals(tree2);
     }
 
     private static Table fillerTableSection(EvntMsg msg){
@@ -52,14 +70,14 @@ public class JsonHelper {
         table.setAddressData(msg.getAddressData());
         table.setDeliveryChannel(msg.getDeliveryChannel());
         table.setCode(msg.getCode());
-        table.setDateFrom(msg.getDateFrom());
-        table.setDateTo(msg.getDateTo());
+        table.setDateFrom(msg.getDateFrom().toString());
+        table.setDateTo(msg.getDateTo().toString());
         table.setMessageDetails(msg.getMessageDetails());
         table.setMessageString(str.toString());
         table.setMessageTemplate(msg.getMsgTemplate());
         table.setStatus(msg.getStatus());
         table.setSendingChannel(msg.getSendingChannel());
-        table.setSendingDate(msg.getSendingDate());
+        table.setSendingDate(msg.getSendingDate().toString());
         table.setSendingDetails(msg.getSendingDetails());
         table.setRefNumber(msg.getRefNumber());
         table.setSubject(msg.getSubject());
@@ -103,7 +121,7 @@ public class JsonHelper {
 
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranAmount(msgDetails.length > 2 ? Long.parseLong(Util.amountFormat(msgDetails[2])) : 0L);
+        operation.setTranAmount(msgDetails.length > 2 ? Util.amountFormat(msgDetails[2]) : null);
         operation.setTranCurrency(msgDetails.length > 3 ? msgDetails[3] : "");
         operation.setTranTime(msgDetails.length > 4 ? msgDetails[4] : "");
         operation.setAuthCode(msgDetails.length > 5 ? msgDetails[5] : "");
@@ -111,15 +129,10 @@ public class JsonHelper {
         operation.setTranType(msgDetails.length > 7 ? msgDetails[7] : "");
         operation.setMerchant(msgDetails.length > 8 ? msgDetails[8] : "");
         operation.setAuthType(msgDetails.length > 9 ? msgDetails[9] : "");
-        card.setCardBalance(msgDetails.length > 10 ?
-                ("0".equals(msgDetails[6]) ? Long.parseLong(Util.amountFormat(msgDetails[10])) : 0L) : null);
+        card.setCardBalance(msgDetails.length > 10 ? ("0".equals(msgDetails[6]) ? Util.amountFormat(msgDetails[10]) : 0l) : null);
         card.setCardCurrency(msgDetails.length > 11 ? ("0".equals(msgDetails[6]) ? msgDetails[11] : "0") : "");
-        operation.setCommissionAmount(msgDetails.length > 12 ?
-                ("".equals(Util.amountFormat(msgDetails[12])) ?
-                        null : Long.parseLong(Util.amountFormat(msgDetails[12])))
-                : null);
-        operation.setTranId(msgDetails.length > 13 ?
-                (StringUtils.isBlank(msgDetails[13]) ? "-1" : msgDetails[13]) : "");
+        operation.setCommissionAmount(msgDetails.length > 12 ? Util.amountFormat(msgDetails[12]) : null);
+        operation.setTranId(msgDetails.length > 13 ? (StringUtils.isBlank(msgDetails[13]) ? "-1" : msgDetails[13]) : "");
 
         if (msgDetails.length > 14){
             operation.setSourceRegNum(msgDetails.length > 14 ? msgDetails[14]:"");
@@ -141,20 +154,16 @@ public class JsonHelper {
 
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranAmount(msgDetails.length > 2 ?
-                ("".equals(Util.amountFormat(msgDetails[2])) ?
-                        null : Long.parseLong(Util.amountFormat(msgDetails[2]))) : null);
+        operation.setTranAmount(msgDetails.length > 2 ? Util.amountFormat(msgDetails[2]) : null);
         operation.setTranCurrency(msgDetails.length > 3 ? msgDetails[3] : "");
         operation.setTranTime(msgDetails.length > 4 ? msgDetails[4] : "");
         operation.setAuthCode(msgDetails.length > 5 ? msgDetails[5] : "");
         operation.setReplyCode(msgDetails.length > 6 ? msgDetails[6] : "");
         operation.setTranType(msgDetails.length > 7 ? msgDetails[7] : "");
         operation.setMerchant(msgDetails.length > 8 ? msgDetails[8] : "");
-        card.setCardBalance(msgDetails.length > 9 ?
-                (msgDetails[6].equals("0") ? Long.parseLong(Util.amountFormat(msgDetails[9])) : 0L) : null);
+        card.setCardBalance(msgDetails.length > 9 ? (msgDetails[6].equals("0") ? Util.amountFormat(msgDetails[9]) : 0l) : null);
         card.setCardCurrency(msgDetails.length > 10 ? (msgDetails[6].equals("0") ? msgDetails[10] : "0") : "");
-        operation.setCommissionAmount(msgDetails.length > 11 ?
-                Long.parseLong(Util.amountFormat(msgDetails[11])) : null);
+        operation.setCommissionAmount(msgDetails.length > 11 ? Util.amountFormat(msgDetails[11]) : null);
         operation.setPaymentId(msgDetails.length > 12 ? msgDetails[12] : "");
         operation.setPostpone(msgDetails.length > 13 ? msgDetails[13] : "");
 
@@ -179,12 +188,12 @@ public class JsonHelper {
 
         operation.setType(msgDetails.length > 0 ? msgDetails[0] : "");
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
-        operation.setTranAmount(msgDetails.length > 2 ? Long.parseLong(Util.amountFormat(msgDetails[2])) : null);
+        operation.setTranAmount(msgDetails.length > 2 ? Util.amountFormat(msgDetails[2]) : null);
         operation.setTranCurrency(msgDetails.length > 3 ? msgDetails[3] : "");
         operation.setTranTime(msgDetails.length > 4 ? msgDetails[4] : "");
         operation.setTranType(msgDetails.length > 5 ? msgDetails[5] : "");
-        card.setCardBalance(msgDetails.length > 6 ? Long.parseLong(Util.amountFormat(msgDetails[6])) : null);
-        operation.setCardCreditLimit(msgDetails.length > 7 ? Long.parseLong(Util.amountFormat(msgDetails[7])) : null);
+        card.setCardBalance(msgDetails.length > 6 ? Util.amountFormat(msgDetails[6]) : null);
+        operation.setCardCreditLimit(msgDetails.length > 7 ? Util.amountFormat(msgDetails[7]) : null);
 
         if (msgDetails.length > 8){
             operation.setSourceRegNum(msgDetails.length > 8 ? msgDetails[8]:"");
@@ -198,6 +207,7 @@ public class JsonHelper {
         json.setClient(client);
         return json;
     }
+
 
     private static JsonMessage fillCType(JsonMessage json, String[] msgDetails) {
         Operation operation = new Operation();
@@ -213,6 +223,7 @@ public class JsonHelper {
     }
 
     private static JsonMessage fillAPType(JsonMessage json, String[] msgDetails) {
+
         Operation operation = new Operation();
         Message msg = new Message();
         Card card = new Card();
@@ -228,6 +239,7 @@ public class JsonHelper {
         return json;
     }
 
+
     private static JsonMessage fillIType(JsonMessage json, String[] msgDetails) {
         Operation operation = new Operation();
         Card card = new Card();
@@ -238,7 +250,7 @@ public class JsonHelper {
         operation.setCardNumber(msgDetails.length > 1 ? msgDetails[1] : "");
         operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
         operation.setTranType(msgDetails.length > 3 ? msgDetails[3] : "");
-        client.setCardsClient(msgDetails.length > 4 ? msgDetails[4].split(",") : new String[0]);
+        client.setCardsClient(msgDetails.length > 4 ? Arrays.asList(msgDetails[4].split(",")) : Arrays.asList(new String[0]));
         card.setRbsNumber(msgDetails.length > 6 ? msgDetails[6] : "");
         card.setPrevCardNumber(msgDetails.length > 7 ? msgDetails[7] : "");
         client.setClientITN(msgDetails.length > 8 ? msgDetails[8] : "");
@@ -265,7 +277,7 @@ public class JsonHelper {
         operation.setTranTime(msgDetails.length > 2 ? msgDetails[2] : "");
         operation.setLockoutCode(msgDetails.length > 3 ? Long.parseLong(msgDetails[3]) : null);
         card.setCardStatus(msgDetails.length > 4 ? msgDetails[4] : "");
-        client.setCardsClient(msgDetails.length > 5 ? msgDetails[5].split(",") : new String[0]);
+        client.setCardsClient(msgDetails.length > 5 ? Arrays.asList(msgDetails[5].split(",")) : Arrays.asList(new String[0]));
 
         json.setOperation(operation);
         json.setCard(card);

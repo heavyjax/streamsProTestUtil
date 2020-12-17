@@ -4,7 +4,7 @@ import ru.sbrf.db.model.EvntMsg;
 import ru.sbrf.json.model.JsonMessage;
 
 public class JsonValidator {
-    public boolean validate(JsonMessage jsonMessage, EvntMsg evntMsg) {
+    public boolean validate(final JsonMessage jsonMessage, final EvntMsg evntMsg) {
         boolean isValid = false;
 
         System.out.println("JSON message validation started");

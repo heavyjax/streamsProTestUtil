@@ -6,15 +6,12 @@ public class Client {
     private String clientITN;
     private String clientWayId;
     private String[] cardsClient;
-    private String docNumber;
-    private String lastNamePrev;
-    private String lastNameCurr;
-    private String firstNamePrev;
-    private String firstNameCurr;
-    private String middleNamePrev;
-    private String middleNameCurr;
-    private String birthDatePrev;
-    private String birthDateCurr;
+    private String regNumber;
+    private String lastName;
+    private String firstName;
+    private String middleName;
+    private String birthDate;
+    private String gender;
 
     public String getClientITN() {
         return clientITN;
@@ -40,76 +37,52 @@ public class Client {
         this.cardsClient = cardsClient;
     }
 
-    public String getDocNumber() {
-        return docNumber;
+    public String getRegNumber() {
+        return regNumber;
     }
 
-    public void setDocNumber(String docNumber) {
-        this.docNumber = docNumber;
+    public void setRegNumber(String regNumber) {
+        this.regNumber = regNumber;
     }
 
-    public String getLastNamePrev() {
-        return lastNamePrev;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastNamePrev(String lastNamePrev) {
-        this.lastNamePrev = lastNamePrev;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getLastNameCurr() {
-        return lastNameCurr;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLastNameCurr(String lastNameCurr) {
-        this.lastNameCurr = lastNameCurr;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getFirstNamePrev() {
-        return firstNamePrev;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setFirstNamePrev(String firstNamePrev) {
-        this.firstNamePrev = firstNamePrev;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
-    public String getFirstNameCurr() {
-        return firstNameCurr;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public void setFirstNameCurr(String firstNameCurr) {
-        this.firstNameCurr = firstNameCurr;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public String getMiddleNamePrev() {
-        return middleNamePrev;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMiddleNamePrev(String middleNamePrev) {
-        this.middleNamePrev = middleNamePrev;
-    }
-
-    public String getMiddleNameCurr() {
-        return middleNameCurr;
-    }
-
-    public void setMiddleNameCurr(String middleNameCurr) {
-        this.middleNameCurr = middleNameCurr;
-    }
-
-    public String getBirthDatePrev() {
-        return birthDatePrev;
-    }
-
-    public void setBirthDatePrev(String birthDatePrev) {
-        this.birthDatePrev = birthDatePrev;
-    }
-
-    public String getBirthDateCurr() {
-        return birthDateCurr;
-    }
-
-    public void setBirthDateCurr(String birthDateCurr) {
-        this.birthDateCurr = birthDateCurr;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     @Override
@@ -118,15 +91,12 @@ public class Client {
                 "clientITN='" + clientITN + '\'' +
                 ", clientWayId='" + clientWayId + '\'' +
                 ", cardsClient=" + Arrays.toString(cardsClient) +
-                ", docNumber='" + docNumber + '\'' +
-                ", lastNamePrev='" + lastNamePrev + '\'' +
-                ", lastNameCurr='" + lastNameCurr + '\'' +
-                ", firstNamePrev='" + firstNamePrev + '\'' +
-                ", firstNameCurr='" + firstNameCurr + '\'' +
-                ", middleNamePrev='" + middleNamePrev + '\'' +
-                ", middleNameCurr='" + middleNameCurr + '\'' +
-                ", birthDatePrev='" + birthDatePrev + '\'' +
-                ", birthDateCurr='" + birthDateCurr + '\'' +
+                ", regNumber='" + regNumber + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", gender='" + gender + '\'' +
                 '}';
     }
 }
