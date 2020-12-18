@@ -1,10 +1,13 @@
 package ru.sbrf;
 
 
+import org.apache.kafka.common.protocol.types.Field;
 import ru.sbrf.db.dao.MonitoringDAO;
 import ru.sbrf.db.dao.Way4DAO;
 import ru.sbrf.db.dto.EvntMsgDTO;
+import ru.sbrf.db.dto.Way4EventDTO;
 import ru.sbrf.db.model.EvntMsg;
+import ru.sbrf.db.model.Way4Event;
 import ru.sbrf.file.FileReader;
 import ru.sbrf.json.JsonHelper;
 import ru.sbrf.json.model.JsonMessage;
@@ -16,19 +19,19 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 public class Main {
-    //private static final String configPath = "C:\\Users\\Maxim\\Google Диск\\Dev\\StreamsProTestUtil\\config.properties";
-    //private static final String jsonFilePath = "C:\\Users\\Maxim\\Google Диск\\Dev\\StreamsProTestUtil\\Message.json";
+    private static final String configPath = "C:\\Users\\Maxim\\Google Диск\\Dev\\StreamsProTestUtil\\config.properties";
+    private static final String jsonFilePath = "C:\\Users\\Maxim\\Google Диск\\Dev\\StreamsProTestUtil\\Message.json";
 
     public static void main(String[] args) {
 
-        if (args.length != 4 || !args[0].equals("-cf") || !args[2].equals("-jp")) {
-            System.out.println("Please, specify path to config.properties file using -cp flag");
-            System.out.println("Please, specify path to json message file using -jp flag");
-            System.exit(0);
-        }
-
-        String configPath = args[1];
-        String jsonFilePath = args[3];
+//        if (args.length != 4 || !args[0].equals("-cf") || !args[2].equals("-jp")) {
+//            System.out.println("Please, specify path to config.properties file using -cp flag");
+//            System.out.println("Please, specify path to json message file using -jp flag");
+//            System.exit(0);
+//        }
+//
+//        String configPath = args[1];
+//        String jsonFilePath = args[3];
 
         try {
 //            Way4DAO way4DAO = new Way4DAO("C:\\Users\\Maxim\\Google Диск\\Dev\\StreamsProTestUtil\\config.properties");
@@ -37,10 +40,13 @@ public class Main {
             EvntMsgDTO evntMsgDTO = new EvntMsgDTO("C:\\Users\\Maxim\\Google Диск\\Dev\\StreamsProTestUtil\\config.properties");
             EvntMsg evntMsg = evntMsgDTO.getEvntMsg();
 
-            JsonHelper jsonHelper = new JsonHelper();
-            String kafkaMessage = jsonHelper.getJsonKafkaMessage(evntMsg);
+            Way4EventDTO way4EventDTO = new Way4EventDTO();
+            Way4Event way4Event = way4EventDTO.getWay4Event(evntMsg);
 
-            //String kafkaMessage = "{\"table\":{\"id\":21999,\"usageActionOid\":635882160030,\"addressData\":\"null\",\"deliveryChannel\":\"SBRF_I\",\"code\":\"null\",\"dateFrom\":\"2019-01-01 00:00:00\",\"dateTo\":\"2012-12-12 00:00:00\",\"messageDetails\":\"null\",\"messageString\":\"I^5336690143307272^2019-07-20 18:32:30^2^^nullnullnullnullnull\",\"messageTemplate\":2744711940,\"status\":\"W\",\"sendingChannel\":\"null\",\"sendingDate\":null,\"sendingDetails\":\"null\",\"refNumber\":\"null\",\"subject\":\"X\",\"priority\":0,\"groupNumber\":0,\"nodeIdent\":null},\"operation\":{\"type\":\"I\",\"cardNumber\":\"5336690143307272\",\"tranAmount\":null,\"tranCurrency\":null,\"tranTime\":\"2019-07-20 18:32:30\",\"authCode\":null,\"tranType\":null,\"replyCode\":null,\"merchant\":null,\"authType\":null,\"commissionAmount\":null,\"tranId\":null,\"sourceRegNum\":null,\"sourceNumber\":null,\"sicCode\":null,\"docId\":null,\"paymentId\":null,\"postpone\":null,\"cardCreditLimit\":null,\"lockoutCode\":null},\"card\":{\"cardBalance\":null,\"cardCurrency\":null,\"rbsNumber\":\"\",\"cardStatus\":\"\",\"prevCardNumber\":\"\",\"product\":\"\",\"cardExpire\":\"\",\"contractNumber\":\"\",\"tokenReferenceID\":null},\"message\":{\"msg\":null,\"msgType\":\"2\",\"mbcCardList\":[\"\"]},\"client\":{\"clientITN\":\"\",\"clientWayId\":\"\",\"cardsClient\":null,\"docNumber\":null,\"lastNamePrev\":null,\"lastNameCurr\":null,\"firstNamePrev\":null,\"firstNameCurr\":null,\"middleNamePrev\":null,\"middleNameCurr\":null,\"birthDatePrev\":null,\"birthDateCurr\":null}}";
+            JsonHelper jsonHelper = new JsonHelper();
+            String kafkaMessage = jsonHelper.getJsonKafkaMessage(way4Event, "uiduiduid", "node1");
+
+            //String kafkaMessage1 = "{\"requestChainUid\":\"uiduiduid\",\"nodeIdent\":\"node1\",\"table\":{\"id\":23999,\"usageActionOid\":null,\"addressData\":\"null\",\"deliveryChannel\":\"KF050-STATUS\",\"code\":\"null\",\"dateFrom\":\"01.01.19\",\"dateTo\":null,\"messageDetails\":null,\"messageString\":null,\"messageTemplate\":null,\"status\":\"W\",\"sendingChannel\":null,\"sendingDate\":null,\"sendingDetails\":null,\"refNumber\":null,\"subject\":null,\"priority\":null,\"groupNumber\":null,\"nodeIdent\":\"node1\"},\"operation\":{\"type\":\"LA\",\"cardNumber\":\"0910-P-1382878998\",\"tranAmount\":null,\"tranCurrency\":null,\"tranTime\":\"2020-04-16 15:28:14\",\"authCode\":null,\"tranType\":null,\"replyCode\":null,\"merchant\":null,\"authType\":null,\"commissionAmount\":null,\"tranId\":null,\"sourceRegNum\":null,\"sourceNumber\":null,\"sicCode\":null,\"docId\":null,\"paymentId\":null,\"postpone\":null,\"cardCreditLimit\":null,\"lockoutCode\":null,\"stlAmount\":null,\"stlCurrency\":null,\"refundAmount\":null,\"refundCurrency\":null,\"docPrevId\":null,\"tranTypeId\":null,\"sourceChannel\":null,\"countryCode\":null},\"card\":{\"cardBalance\":null,\"cardCurrency\":null,\"rbsNumber\":null,\"cardStatus\":\"Q\",\"prevCardNumber\":null,\"product\":null,\"cardExpire\":null,\"contractNumber\":null,\"tokenReferenceID\":null,\"cbCode\":null,\"cardDateOpen\":null,\"addInfo\":null,\"cardDateClose\":null,\"contractId\":null,\"level\":null,\"trLastName\":null,\"trFirstName\":null},\"message\":null,\"client\":{\"clientITN\":\"129871927987324\",\"clientWayId\":\"8719279172937nullnullnullnullnull\",\"clientWayDate\":null,\"cardsClient\":[],\"lastName\":null,\"firstName\":null,\"middleName\":null,\"birthDate\":null,\"birthPlace\":null,\"regNumber\":null,\"regNumberDetails\":null,\"gender\":null,\"type\":null,\"companyName\":null,\"profession\":null,\"email\":null,\"mobilePhone\":null,\"homePhone\":null,\"workPhone\":null,\"cbCode\":null}}";
 
             MessageSender messageSender = new MessageSender(configPath);
             messageSender.sendMessage("W4S.BALANCE", kafkaMessage, "AP");
@@ -51,10 +57,12 @@ public class Main {
             String jsonMessageFromKafka = future.get();
 
             if (jsonMessageFromKafka != null) {
+                String jsonFromKafka = jsonHelper.exclude(jsonMessageFromKafka, "requestChainUid");
                 FileReader fr = new FileReader(jsonFilePath);
                 String jsonMesageFromFile = fr.readFile(jsonFilePath);
+                String jsonFromFile = jsonHelper.exclude(jsonMesageFromFile, "requestChainUid");
 
-                boolean messagesAreEquals = jsonHelper.compareJsonMessages(jsonMessageFromKafka, jsonMesageFromFile);
+                boolean messagesAreEquals = jsonHelper.compareJsonMessages(jsonFromKafka, jsonFromFile);
 
                 if (messagesAreEquals) {
                     System.out.println("TEST SUCCESS...");
@@ -83,4 +91,6 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+
 }
